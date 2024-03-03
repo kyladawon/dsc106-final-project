@@ -54,6 +54,7 @@ declare module '$env/static/private' {
 	export const _CE_CONDA: string;
 	export const PATH: string;
 	export const npm_package_json: string;
+	export const npm_config_engine_strict: string;
 	export const _: string;
 	export const LaunchInstanceID: string;
 	export const npm_config_userconfig: string;
@@ -154,6 +155,7 @@ declare module '$env/dynamic/private' {
 		_CE_CONDA: string;
 		PATH: string;
 		npm_package_json: string;
+		npm_config_engine_strict: string;
 		_: string;
 		LaunchInstanceID: string;
 		npm_config_userconfig: string;

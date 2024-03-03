@@ -603,26 +603,10 @@
 </script>
 
 <main>
-  <div class="banner">
-    <h1>Medals and Memories: Charting Olympic Greatness</h1>
-    <h3>
-      This chart contains information about medals won for each sport, year,
-      country, gender, and event between the period of 1976-2008 in the Summer
-      Olympics.
-    </h3>
-    <div class="link">
-      <p>Click a bar to drill down and click the background to go back up.</p>
-      <a
-        href="https://docs.google.com/document/d/1yUMUHjXo-1xp1h4csNjPcgE3yqoF7W3_jrWIG0RTXgM/edit?usp=sharing"
-      >
-        Project Write-Up</a
-      >
-    </div>
-  </div>
   <script
     src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"
   ></script>
-  <div id="chart-container" style="width: 100%; height: 100;">
+  <div id="chart-container" style="width: 100%; height: 85vh;">
     <div class="tooltip" style="opacity: 0;"></div>
     <div>
       <label class="gold-label">
@@ -656,13 +640,14 @@
     background-size: 20%;
     background-repeat: no-repeat;
     background-position: 95% 90%;
+    background-color: white;
     width: 100%;
     max-width: 1200px;
     height: 100%;
     position: relative;
-    border: 2px solid transparent;
+    border: 2px solid;
     box-sizing: border-box;
-    margin: 0 auto;
+    margin: 15px auto 0;
   }
 
   #chart-container::before {
