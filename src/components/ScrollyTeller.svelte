@@ -2,7 +2,7 @@
   import Scroller from '@sveltejs/svelte-scroller';
   import Map from './Map.svelte';
   import { geoMercator } from 'd3-geo';
-  import Graph from './Graph.svelte';
+  import Project3 from './Proj3.svelte';
 
   let count, index, offset, progress;
   let width, height;
@@ -92,7 +92,7 @@
     </section>
     <section>
       Data Exploration
-      <!-- <Project3 {index} /> -->
+      <Project3 {index} />
     </section>
     <section>
       Where were olympics held?
