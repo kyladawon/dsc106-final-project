@@ -3,6 +3,12 @@
   import Map from './Map.svelte';
   import { geoMercator } from 'd3-geo';
   import Project3 from './Proj3.svelte';
+  // import Chart from './Chart.svelte';
+  import Athlete from './Athlete.svelte';
+  import { tweened } from 'svelte/motion';
+  import { cubicOut } from 'svelte/easing';
+  import Video from './Video.svelte';
+  import Bubble from './SportsBubble.svelte';
 
   let count, index, offset, progress;
   let width, height;
@@ -28,6 +34,16 @@
   };
 
   $: projection = geoMercator().fitSize([width, height], geoJsonToFit);
+
+  let isHovered = false;
+
+  function handleMouseOver() {
+    isHovered = true;
+  }
+
+  function handleMouseOut() {
+    isHovered = false;
+  }
 </script>
 
 <Scroller
@@ -49,10 +65,12 @@
     <!-- <div class="progress-bars">
       <p>current section: <strong>{index + 1}/{count}</strong></p>
       <progress value={count ? (index + 1) / count : 0} />
-
+ 
+ 
       <p>offset in current section</p>
       <progress value={offset || 0} />
-
+ 
+ 
       <p>total progress</p>
       <progress value={progress || 0} />
     </div> -->
@@ -90,16 +108,35 @@
         </p>
       </div>
     </section>
-    <section>
+    <section class="section2">
       Data Exploration
-      <Project3 {index} />
+      <Project3 />
     </section>
-    <section>
+    <section class="section3">
       Where were olympics held?
       <Map bind:geoJsonToFit {index} />
     </section>
-    <section>U.S. Best Performing Sports</section>
-    <section>U.S. Best Performing Athletes</section>
+    <section class="section4">
+      U.S. Best Performing Sports
+      <Bubble />
+    </section>
+    <section>
+      <!-- <div
+        on:mouseover={handleMouseOver}
+        on:mouseout={handleMouseOut}
+        class:container={true}
+        class:hovered={isHovered}
+      >
+        <h2>Who's the Best Performing Athlete?</h2>
+      </div> -->
+    </section>
+    <section>
+      <Athlete />
+    </section>
+    <section>
+      U.S. Best Performing Athletes
+      <Video />
+    </section>
     <section>U.S. Gender Based Performance</section>
     <section>Is there a home field advantage?</section>
     <section>Closing Thoughts</section>
@@ -128,6 +165,30 @@
     line-height: 1;
     text-align: center;
     font-family: 'verdana';
+  }
+
+  h2 {
+    transition: font-size 0.5s ease-in-out;
+    animation: flicker 0.5s infinite alternate;
+    font-weight: 500, 'bold';
+    text-transform: uppercase;
+    line-height: 1;
+    text-align: center;
+    font-family: 'verdana';
+    padding: 10em;
+  }
+
+  .hovered {
+    font-size: 1.2em; /* Increase font size on hover */
+  }
+
+  @keyframes flicker {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
   }
 
   h3 {
@@ -172,12 +233,35 @@
     text-align: center;
     max-width: 100%; /* adjust at will */
     color: black;
-    padding: 1em;
-    margin: 0 0 2em 0;
+    /* padding: 1em 1em; */
+    /* margin: 2em 2em 2em 2em; */
     font-family: 'verdana';
     text-align: center;
     font-size: 20px;
     line-height: 28px;
     font-weight: bold;
+  }
+  .section2 {
+    background-image: linear-gradient(
+      to bottom right,
+      rgba(0, 0, 255, 0.5),
+      rgba(0, 255, 255, 0.5)
+    );
+  }
+
+  .section3 {
+    background-image: linear-gradient(
+      to bottom right,
+      rgba(255, 255, 0, 0.5),
+      rgba(255, 0, 0, 0.5)
+    );
+  }
+
+  .section4 {
+    background-image: linear-gradient(
+      to bottom right,
+      rgba(0, 255, 0, 0.5),
+      rgba(0, 100, 0, 0.5)
+    );
   }
 </style>

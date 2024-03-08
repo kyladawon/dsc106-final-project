@@ -12,7 +12,8 @@
     "@sveltejs/adapter-static": "^3.0.1",
     "@sveltejs/kit": "^2.0.0",
     "@sveltejs/vite-plugin-svelte": "^3.0.0",
-    "svelte": "^4.2.7",
+    "@types/node": "^20.11.24",
+    "svelte": "^4.2.12",
     "vite": "^5.0.3"
   },
   "type": "module",
@@ -22,7 +23,10 @@
     "axios": "^1.6.7",
     "d3": "^7.8.5",
     "d3-geo": "^3.1.0",
+    "install": "^0.13.0",
     "mapbox-gl": "^2.15.0",
-    "papaparse": "^5.4.1"
+    "papaparse": "^5.4.1",
+    "svelte-carousel": "^1.0.25",
+    "svelte-scrollto": "^0.2.0"
   }
 }

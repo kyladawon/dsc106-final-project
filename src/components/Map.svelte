@@ -26,9 +26,11 @@
     map = new mapboxgl.Map({
       container,
       style: 'mapbox://styles/mapbox/light-v11',
-      center: [-50, 20],
+      center: [10, 30],
       zoom: 1.8,
+      pitch: 0,
       bearing: 0,
+      projection: 'mercator',
     });
 
     map.on('load', () => {
@@ -60,16 +62,23 @@
   function addMarkers() {
     Object.keys(citiesYears).forEach((cityName) => {
       const city = citiesYears[cityName];
+      const popup = new mapboxgl.Popup().setHTML(
+        `<h3>${cityName}</h3><p>Year: ${city.year}</p>`
+      );
       const marker = new mapboxgl.Marker()
         .setLngLat(city.coordinates)
-        .setPopup(
-          new mapboxgl.Popup().setHTML(
-            `<h3>${cityName}</h3><p>Year: ${city.year}</p>`
-          )
-        )
         .addTo(map);
 
       marker.cityData = city;
+      marker.setPopup(popup);
+
+      marker.getElement().addEventListener('mouseenter', () => {
+        marker.togglePopup();
+      });
+
+      marker.getElement().addEventListener('mouseleave', () => {
+        marker.togglePopup();
+      });
       cityMarkers.push(marker);
     });
   }
@@ -93,8 +102,8 @@
 
 <style>
   .map {
-    width: 60%;
-    height: 80vh; /* check problem when setting width */
+    width: 93.5%;
+    height: 87vh; /* check problem when setting width */
     position: absolute;
     opacity: 0;
     visibility: hidden;
@@ -102,8 +111,8 @@
       opacity 2s,
       visibility 2s;
     outline: rgba(34, 33, 33, 0.053) solid 3px;
-    padding: 1em;
-    margin: 2em 2em 2em 2em;
+    /* padding: 1em;
+   margin: 2em 2em 2em 2em; */
   }
 
   .map.visible {

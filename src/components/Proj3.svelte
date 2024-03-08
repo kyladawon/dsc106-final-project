@@ -669,48 +669,6 @@
     z-index: -1;
   }
 
-  h1 {
-    font-size: 43px;
-    font-weight: 500, 'bold';
-    text-transform: uppercase;
-    line-height: 1;
-    text-align: center;
-    font-family: 'verdana';
-  }
-
-  h3 {
-    font-family: 'verdana';
-    text-align: center;
-    font-size: 20px;
-    line-height: 28px;
-  }
-
-  p {
-    font-family: 'verdana';
-    letter-spacing: 0.55px;
-    font-size: 16px;
-    line-height: 28px;
-    text-align: center;
-  }
-
-  .link {
-    text-align: center;
-    font-family: 'verdana';
-  }
-
-  .banner {
-    background-image: linear-gradient(
-      to bottom right,
-      rgba(0, 129, 200, 0.5),
-      rgba(252, 177, 49, 0.5),
-      rgba(0, 166, 81, 0.5),
-      rgba(238, 51, 78, 0.5)
-    );
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 10px;
-    color: black;
-  }
   .gold-label {
     background-color: gold;
     padding: 5px 5px;
