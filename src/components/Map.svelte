@@ -102,7 +102,7 @@
 
 <style>
   .map {
-    width: 93.5%;
+    width: 100%;
     height: 87vh; /* check problem when setting width */
     position: absolute;
     opacity: 0;
