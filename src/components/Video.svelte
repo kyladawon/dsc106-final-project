@@ -1,4 +1,4 @@
-<script>
+<!-- <script>
   import { onMount } from 'svelte';
   // DOM Elements
   let slider;
@@ -188,4 +188,4 @@
   :global(.grabbing img) {
     transform: scale(0.9);
   }
-</style>
+</style> -->
