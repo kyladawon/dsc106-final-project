@@ -1,15 +1,6 @@
-<!-- <script>
+<script>
   import { onMount } from 'svelte';
-  // DOM Elements
-  let slider;
-
-  // State
-  let isDragging = false,
-    startPos = 0,
-    currentTranslate = 0,
-    prevTranslate = 0,
-    animationID = 0,
-    currentIndex = 0;
+  import { afterUpdate } from 'svelte';
 
   let items = [
     {
@@ -26,166 +17,130 @@
     },
   ];
 
-  onMount(() => {
-    const slides = document.querySelectorAll('div');
-    slides.forEach((slide, index) => {
-      // Touch event listeners
-      slide.addEventListener('touchstart', touchStart(index));
-      slide.addEventListener('touchend', touchEnd);
-      slide.addEventListener('touchmove', touchMove);
-      // Mouse event listeners
-      slide.addEventListener('mousedown', touchStart(index));
-      slide.addEventListener('mouseup', touchEnd);
-      slide.addEventListener('mouseleave', touchEnd);
-      slide.addEventListener('mousemove', touchMove);
-    });
+  let index = 0;
+  let autoSlide = true;
+  let interval;
 
-    // Event callbacks
-    function touchStart(index) {
-      return function (event) {
-        currentIndex = index;
-        startPos = getPositionX(event);
-        isDragging = true;
-        animationID = requestAnimationFrame(animation);
-        slider.classList.add('grabbing');
-      };
-    }
+  function nextSlide() {
+    index = (index + 1) % items.length;
+  }
 
-    function touchEnd() {
-      isDragging = false;
-      cancelAnimationFrame(animationID);
-      const movedBy = currentTranslate - prevTranslate;
-      if (movedBy < -100 && currentIndex < slides.length - 1) currentIndex += 1;
-      if (movedBy > 100 && currentIndex > 0) currentIndex -= 1;
-      setPositionByIndex();
-      slider.classList.remove('grabbing');
-    }
+  function prevSlide() {
+    index = (index - 1 + items.length) % items.length;
+  }
 
-    function touchMove(event) {
-      if (isDragging) {
-        const currentPosition = getPositionX(event);
-        currentTranslate = prevTranslate + currentPosition - startPos;
-      }
-    }
+  function handleDotClick(dotIndex) {
+    index = dotIndex;
+  }
 
-    // Helper functions
-    function getPositionX(event) {
-      return event.type.includes('mouse')
-        ? event.pageX
-        : event.touches[0].clientX;
-    }
+  function startAutoSlide() {
+    interval = setInterval(nextSlide, 4000);
+  }
 
-    function animation() {
-      setSliderPosition();
-      isDragging && requestAnimationFrame(animation);
-    }
+  function stopAutoSlide() {
+    clearInterval(interval);
+  }
 
-    function setSliderPosition() {
-      slider.style.transform = `translateX(${currentTranslate}px)`;
-    }
+  onMount(startAutoSlide);
 
-    function setPositionByIndex() {
-      currentTranslate = currentIndex * -window.innerWidth;
-      prevTranslate = currentTranslate;
-      setSliderPosition();
-    }
-    function prevSlide() {
-      if (currentIndex > 0) {
-        currentIndex--;
-        setPositionByIndex();
-      }
-    }
-
-    function nextSlide() {
-      if (currentIndex < items.length - 1) {
-        currentIndex++;
-        setPositionByIndex();
-      }
+  afterUpdate(() => {
+    if (autoSlide) {
+      startAutoSlide();
+    } else {
+      stopAutoSlide();
     }
   });
 </script>
 
-<svelte:window on:contextmenu|preventDefault|stopPropagation />
-
-<article bind:this={slider}>
+<div
+  class="slider"
+  on:mouseenter={stopAutoSlide}
+  on:mouseleave={startAutoSlide}
+>
   {#each items as item, i}
-    {#if item.type === 'video'}
-      <div class="slide">
-        <iframe
-          src={`https://www.youtube.com/embed/${item.videoId}`}
-          width="560"
-          height="315"
-          frameborder="0"
-          allowfullscreen
-        ></iframe>
-        <button on:click={prevSlide}>Previous</button>
-        <button on:click={nextSlide}>Next</button>
-      </div>
+    {#if i === index}
+      {#if item.type === 'video'}
+        <div class="slide">
+          <iframe
+            src={`https://www.youtube.com/embed/${item.videoId}`}
+            width="560"
+            height="315"
+            frameborder="0"
+            allowfullscreen
+          ></iframe>
+        </div>
+      {/if}
     {/if}
   {/each}
-</article>
+  <div class="dots">
+    {#each items as _, i}
+      <span
+        class="dot"
+        class:selected={index === i}
+        on:click={() => handleDotClick(i)}
+      ></span>
+    {/each}
+  </div>
+  <button class="prev" on:click={prevSlide}>Previous</button>
+  <button class="next" on:click={nextSlide}>Next</button>
+</div>
 
 <style>
-  article {
-    display: inline-flex;
+  .slider {
+    position: relative;
+    width: 100%;
+    height: 50vh;
     overflow: hidden;
-    transform: translateX(0);
-    transition: transform 0.3s ease-out;
-    cursor: grab;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .slide {
-    flex: 0 0 auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .dots {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%; /* Occupy full width of parent container */
   }
 
-  iframe {
-    width: 100%; /* Occupy full width of parent container */
-    height: 100%; /* Occupy full height of parent container */
-    max-width: 100%;
-    max-height: 100%;
-  }
-
-  div {
-    max-height: 100vh;
-    width: 100vw;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
-    user-select: none;
-  }
-
-  img {
-    max-width: 100%;
-    max-height: 50%;
-    transition: transform 0.3s ease-in-out;
-  }
-
-  h2 {
-    font-size: 2.5rem;
-    margin-bottom: 0rem;
-  }
-
-  h4 {
-    font-size: 1.3rem;
-  }
-
-  button {
-    background-color: #444;
-    color: #fff;
-    text-decoration: none;
-    padding: 1rem 1.5rem;
-    margin-top: 1rem;
+  .dot {
+    width: 10px;
+    height: 10px;
+    background-color: #ccc;
+    border-radius: 50%;
+    margin: 0 5px;
     cursor: pointer;
   }
 
-  :global(.grabbing img) {
-    transform: scale(0.9);
+  .dot.selected {
+    background-color: #333;
   }
-</style> -->
+
+  .prev,
+  .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  .prev {
+    left: 20px;
+  }
+
+  .next {
+    right: 20px;
+  }
+</style>

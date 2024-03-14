@@ -153,7 +153,7 @@
   // Create chart
   function createChart(data) {
     const width = 1500;
-    const height = 900;
+    const height = 700;
     const marginTop = 50;
     const marginRight = 40;
     const marginBottom = 0;
@@ -600,13 +600,18 @@
   function _duration() {
     return 750;
   }
+
+
+
+
+  
 </script>
 
 <main>
   <script
     src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"
   ></script>
-  <div id="chart-container" style="width: 100%; height: 85vh;">
+  <div id="chart-container" style="width: 100%; height: 80vh;">
     <div class="tooltip" style="opacity: 0;"></div>
     <div>
       <label class="gold-label">
@@ -633,6 +638,7 @@
     padding: 10px;
     pointer-events: none;
     z-index: 999;
+    font-size: 20px;
   }
 
   #chart-container {
@@ -645,18 +651,18 @@
     max-width: 1200px;
     height: 100%;
     position: relative;
-    border: 2px solid;
+    border: 0px solid;
     box-sizing: border-box;
-    margin: 15px auto 0;
+    margin: 30px auto 0;
   }
 
   #chart-container::before {
     content: '';
     position: absolute;
-    top: -4px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
+    top: -6px;
+    left: -6px;
+    right: -6px;
+    bottom: -6px;
     border: 5px solid;
     border-image: linear-gradient(
       to bottom right,
@@ -673,19 +679,22 @@
     background-color: gold;
     padding: 5px 5px;
     border-radius: 5px;
+    font-size: 15px;
   }
   .silver-label {
     background-color: silver;
     padding: 5px 5px;
     border-radius: 5px;
+    font-size: 15px;
   }
   .bronze-label {
     background-color: #cd7f32;
     padding: 5px 5px;
     border-radius: 5px;
+    font-size: 15px;
   }
   #chart-container div {
-    margin-top: 20px;
+    margin-top: 7px;
     margin-left: 10px;
   }
 </style>

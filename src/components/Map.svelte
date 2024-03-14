@@ -3,6 +3,7 @@
   import { onMount } from 'svelte';
   export let index;
   export let geoJsonToFit;
+  import * as d3 from 'd3';
 
   mapboxgl.accessToken =
     'pk.eyJ1Ijoia3lsYXBwYXJrIiwiYSI6ImNsc21mNWwxNzBsc3oycXJ5NTAyMzZtamQifQ.FH00Q1Y2ARsOleB7tPzh0A';
@@ -12,7 +13,7 @@
   let citiesYears = {
     Montreal: { coordinates: [-73.5673, 45.5017], year: 1976 },
     Moscow: { coordinates: [37.6175, 55.7558], year: 1880 },
-    'Los Angeles': { coordinates: [-118.2437, 34.0522], year: 1884 },
+    'Los Angeles': { coordinates: [-118.2437, 34.0522], year: 1984 },
     Seoul: { coordinates: [126.978, 37.5665], year: 1988 },
     Barcelona: { coordinates: [2.1734, 41.3851], year: 1992 },
     Atlanta: { coordinates: [-84.388, 33.749], year: 1996 },
@@ -21,8 +22,26 @@
     Beijing: { coordinates: [116.4074, 39.9042], year: 2008 },
   };
   let cityMarkers = [];
+  
+  let countries = {
+    'United States': {medals: 1992},
+    'China':  {medals: 679 }
+  }
+ 
+
+
+
+  let data = [];
+  async function fetchData() {
+        const resForward = await fetch('olympic.csv');
+        const csvForward = await resForward.text();
+        data = d3.csvParse(csvForward, d3.autoType);
+    }
+
 
   onMount(() => {
+    fetchData();
+    
     map = new mapboxgl.Map({
       container,
       style: 'mapbox://styles/mapbox/light-v11',
@@ -40,6 +59,9 @@
       map.on('drag', updateBounds);
       map.on('move', updateBounds);
     });
+
+
+    
   });
 
   function updateBounds() {
@@ -83,12 +105,15 @@
     });
   }
 
+  
   let isVisible = false;
   $: if (index === 2) {
     isVisible = true;
   } else {
     isVisible = false;
   }
+
+
 </script>
 
 <svelte:head>
@@ -103,7 +128,7 @@
 <style>
   .map {
     width: 100%;
-    height: 87vh; /* check problem when setting width */
+    height: 80vh; /* check problem when setting width */
     position: absolute;
     opacity: 0;
     visibility: hidden;

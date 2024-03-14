@@ -55,7 +55,11 @@
   const thompsonInfo = '';
   const phelpsInfo = '';
   const fischerInfo = '';
+
 </script>
+
+
+
 
 {#if showInfo}
   <div class="medal-info">
@@ -65,10 +69,9 @@
 
 {#if showButton}
   <button on:click={revealTop3} class="big-button">Reveal 3rd Place</button>
-  <h3>INSTRUCTIONS</h3>
-  <h2>are u ready to see the top 3 olympics athletes!!!! click button</h2>
+  <h2>Click button to reveal top 3 Olympic athletes</h2>
   <br />
-  <h2>then scroll the timeline on the right to see</h2>
+  <h2>Scroll the timeline on the right for more information</h2>
 {/if}
 
 {#if showTop3}
@@ -122,10 +125,10 @@
 
 {#if showTop2}
   <div class="container-fischer">
-    <button on:click={revealTop1} class="big-button">Reveal 1st Place</button>
     <button on:click={revealTop3} class="big-button"
       >Go Back to 3rd Place</button
     >
+    <button on:click={revealTop1} class="big-button">Reveal 1st Place</button>
     <h3>Top 2</h3>
     <h4>Birgit Fischer</h4>
     <h2>Career Highlights</h2>
@@ -275,7 +278,12 @@
     background-size: 48%;
     background-repeat: no-repeat;
     background-position: 0% 400%;
-    background-color: #474e5d;
+    background-color:
+    linear-gradient(
+      to bottom right,
+      rgba(0, 0, 128, 0.5),
+    rgba(0, 0, 0, 0.5)
+    );
   }
 
   .container-thompson {
@@ -290,7 +298,12 @@
     background-size: 30%;
     background-repeat: no-repeat; /* Prevent the background image from repeating */
     background-position: 5% 100%; /* Position the background image at the left bottom corner */
-    background-color: #474e5d;
+    background-color: 
+    linear-gradient(
+      to bottom right,
+      rgba(0, 0, 128, 0.5),
+    rgba(0, 0, 0, 0.5)
+    );
   }
 
   .container-phelps {
@@ -306,7 +319,12 @@
     background-size: 60%;
     background-repeat: no-repeat;
     background-position: -35% 100%;
-    background-color: #474e5d;
+    background-color:
+    linear-gradient(
+      to bottom right,
+      rgba(0, 0, 128, 0.5),
+    rgba(0, 0, 0, 0.5)
+    );
   }
 
   .timeline {
@@ -315,10 +333,17 @@
     right: 0; /* Align the timeline to the right */
     width: 500px; /* Set the width of the timeline */
     height: 100%; /* Set the height of the timeline to cover the entire container */
-    background-color: #474e5d;
+    background-color: 
+    linear-gradient(
+      to bottom right,
+      rgba(0, 0, 128, 0.5),
+    rgba(0, 0, 0, 0.5)
+    );
     font-family: Helvetica, sans-serif;
     overflow-x: hidden; /* Hide horizontal scrollbar */
     overflow-y: auto; /* Enable vertical scrolling */
+    font-size: 14px;
+    font-family: times new roman;
   }
 
   /* The actual timeline (the vertical ruler) */
@@ -356,10 +381,14 @@
     padding: 0;
     margin: 0 auto;
     text-align: left;
-    width: 40%; /* Set the width to the maximum content width */
+    width: 35%; /* Set the width to the maximum content width */
+    color: rgb(255, 255, 200);
+    font-size: 15px;
   }
+
   ul ul {
     margin-left: 40px; /* Adjust the left margin of the nested ul */
     width: 100%;
+    color: rgb(255, 255, 200);
   }
 </style>
