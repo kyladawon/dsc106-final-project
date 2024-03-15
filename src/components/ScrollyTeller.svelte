@@ -8,7 +8,7 @@
   import { cubicOut } from 'svelte/easing';
   import Bubble from './SportsBubble.svelte';
   import Country from './country.svelte';
-  import HomeAdv from './Linegraph.svelte';
+  import HomeAdv from './HomeAdv.svelte';
 
   let count, index, offset, progress;
   let width, height;
