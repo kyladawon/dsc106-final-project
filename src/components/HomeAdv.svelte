@@ -99,12 +99,12 @@
       y2={height - marginBottom}
     />
 
-    {#each createScales(selectedDataset.data).xScale.ticks() as tick}
+    {#each selectedDataset.data as point}
       <!-- X-Axis Ticks -->
       <line
         stroke="currentColor"
-        x1={createScales(selectedDataset.data).xScale(tick)}
-        x2={createScales(selectedDataset.data).xScale(tick)}
+        x1={createScales(selectedDataset.data).xScale(point.year)}
+        x2={createScales(selectedDataset.data).xScale(point.year)}
         y1={height - marginBottom}
         y2={height - marginBottom + 6}
       />
@@ -113,10 +113,10 @@
       <text
         fill="currentColor"
         text-anchor="middle"
-        x={createScales(selectedDataset.data).xScale(tick)}
+        x={createScales(selectedDataset.data).xScale(point.year)}
         y={height - marginBottom + 22}
       >
-        {tick}
+        {point.year}
       </text>
     {/each}
   </g>
