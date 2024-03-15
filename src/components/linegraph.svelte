@@ -21,7 +21,7 @@
     { name: 'Moscow', data: moscow },
     { name: 'Seoul', data: seoul },
     { name: 'Sydney', data: sydney },
-    { name: 'USA', data: usa },
+    { name: 'United States', data: usa },
   ];
 
   // Chart dimensions and margins

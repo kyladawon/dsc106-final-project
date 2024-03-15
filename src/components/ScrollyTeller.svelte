@@ -6,7 +6,6 @@
   import Athlete from './Athlete.svelte';
   import { tweened } from 'svelte/motion';
   import { cubicOut } from 'svelte/easing';
-  // import Video from './Video.svelte';
   import Bubble from './SportsBubble.svelte';
   import Country from './country.svelte';
   import Linegraph from './Linegraph.svelte';
