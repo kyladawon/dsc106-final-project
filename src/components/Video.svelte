@@ -1,4 +1,4 @@
-<script>
+<!-- <script>
   import { onMount } from 'svelte';
   import { afterUpdate } from 'svelte';
 
@@ -143,4 +143,4 @@
   .next {
     right: 20px;
   }
-</style>
+</style> -->

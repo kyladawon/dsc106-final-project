@@ -69,7 +69,7 @@
     d3.select('.line')
       .transition()
       .duration(750) // Set the duration of the transition
-      .attr('d', lineGenerator(selectedDataset.data));
+      .attr('d', lineGenerator(selectegidDataset.data));
   }
 
   // Call updateLine function on component mount
