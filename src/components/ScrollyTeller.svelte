@@ -8,7 +8,7 @@
   import { cubicOut } from 'svelte/easing';
   import Bubble from './SportsBubble.svelte';
   import Country from './country.svelte';
-  import Linegraph from './Linegraph.svelte';
+  import HomeAdv from './Linegraph.svelte';
 
   let count, index, offset, progress;
   let width, height;
@@ -116,7 +116,7 @@
 
     <section class="section5">
       U.S. Best Performing Sports -- line graph
-      <Linegraph />
+      <HomeAdv />
     </section>
 
     <section class="section6">
