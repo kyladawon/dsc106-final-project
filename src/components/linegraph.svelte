@@ -1,107 +1,194 @@
 <script>
+  import { onMount } from 'svelte';
+  import * as d3 from 'd3';
+  import {
+    athens,
+    barcelona,
+    beijing,
+    montreal,
+    moscow,
+    seoul,
+    sydney,
+    usa,
+  } from './nineData.js';
 
+  // Define an array of datasets
+  const datasets = [
+    { name: 'Athens', data: athens },
+    { name: 'Barcelona', data: barcelona },
+    { name: 'Beijing', data: beijing },
+    { name: 'Montreal', data: montreal },
+    { name: 'Moscow', data: moscow },
+    { name: 'Seoul', data: seoul },
+    { name: 'Sydney', data: sydney },
+    { name: 'USA', data: usa },
+  ];
 
-
-import { onMount } from 'svelte';
-import * as d3 from 'd3';
-import Papa from 'papaparse';
-import { scaleUtc, scaleLinear, extent, sum, timeParse} from 'd3';
-
-let data = [];
-
-async function convertCsvToJson() {
-  const res = await fetch('olympic.csv');
-  const csv = await res.text();
-
-  const parsed = Papa.parse(csv, { header: true });
-  const jsonData = { name: 'olympic', children: [] };
-
-  parsed.data.forEach((entry) => {
-    let hasNaN = false;
-    for (let key in entry) {
-      if ((entry[key] === 'NaN') || (entry[key] === '')) {
-        hasNaN = true;
-        break;
-      }
-    }
-    if (!hasNaN) {
-      jsonData.children.push({
-        sport: entry.Sport,
-        count: parseInt(entry.Medal) || 0 // Convert count to integer, default to 0 if parsing fails
-      });
-    }
-  });
-
-  return jsonData;
-}
-
-onMount(async () => {
-    data = await convertCsvToJson(); // Await the JSON data
-    createChart(data);
-    console.log(data);
-  });
-
-
-
-  function createChart() {
-    const width = 928;
-  const height = 600;
+  // Chart dimensions and margins
+  const width = 928;
+  const height = 500;
   const marginTop = 20;
-  const marginRight = 20;
+  const marginRight = 30;
   const marginBottom = 30;
-  const marginLeft = 30;
+  const marginLeft = 40;
 
-  // Create the positional scales.
-  const x = d3.scaleUtc()
-    .domain(d3.extent(data, d => d.Year))
-    .range([marginLeft, width - marginRight]);
+  // Selected dataset
+  let selectedDataset = datasets[0];
 
-    const totalMedals = sum(data, d => d.values);
+  // Function to create scales
+  function createScales(data) {
+    const xScale = d3
+      .scaleLinear()
+      .domain(d3.extent(data, (d) => d.year))
+      .range([marginLeft, width - marginRight]);
 
-  const y = scaleLinear()
-    .domain([0, totalMedals])
-    .range([height - marginBottom, marginTop]);
+    const yScale = d3
+      .scaleLinear()
+      .domain([0, d3.max(data, (d) => d.count)])
+      .range([height - marginBottom, marginTop]);
 
-  // Create the SVG container.
-  const svg = d3.create("svg")
-      .attr("width", width)
-      .attr("height", height)
-      .attr("viewBox", [0, 0, width, height])
-      .attr("style", "max-width: 100%; height: auto; overflow: visible; font: 10px sans-serif;");
-
-  // Add the horizontal axis.
-  svg.append("g")
-      .attr("transform", `translate(0,${height - marginBottom})`)
-      .call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0));
-
-  // Add the vertical axis.
-  svg.append("g")
-      .attr("transform", `translate(${marginLeft},0)`)
-      .call(d3.axisLeft(y))
-      .call(g => g.select(".domain").remove())
-      .call(voronoi ? () => {} : g => g.selectAll(".tick line").clone()
-          .attr("x2", width - marginLeft - marginRight)
-          .attr("stroke-opacity", 0.1))
-      .call(g => g.append("text")
-          .attr("x", -marginLeft)
-          .attr("y", 10)
-          .attr("fill", "currentColor")
-          .attr("text-anchor", "start")
-          .text("↑ Unemployment (%)"));
-
-
-const line = d3.line();
-  const path = svg.append("g")
-      .attr("fill", "none")
-      .attr("stroke", "steelblue")
-      .attr("stroke-width", 1.5)
-      .attr("stroke-linejoin", "round")
-      .attr("stroke-linecap", "round")
-    .selectAll("path")
-    .data(groups.values())
-    .join("path")
-      .style("mix-blend-mode", "multiply")
-      .attr("d", line);
+    return { xScale, yScale };
   }
 
-  </script>
+  // Function to create line generator
+  function createLineGenerator(xScale, yScale) {
+    return d3
+      .line()
+      .x((d) => xScale(d.year))
+      .y((d) => yScale(d.count));
+  }
+
+  // Function to update the line path with transition
+  function updateLine() {
+    const lineGenerator = createLineGenerator(
+      createScales(selectedDataset.data).xScale,
+      createScales(selectedDataset.data).yScale
+    );
+
+    // Select the line path and apply transition
+    d3.select('.line')
+      .transition()
+      .duration(750) // Set the duration of the transition
+      .attr('d', lineGenerator(selectedDataset.data));
+  }
+
+  // Call updateLine function on component mount
+  onMount(updateLine);
+</script>
+
+<!-- Add the updateLine function call inside the select element -->
+<select bind:value={selectedDataset} on:change={updateLine}>
+  {#each datasets as dataset}
+    <option value={dataset}>{dataset.name}</option>
+  {/each}
+</select>
+
+<svg
+  {width}
+  {height}
+  viewBox={'0 0 ' + width + ' ' + height}
+  style="max-width: 100%; height: auto;"
+>
+  <g>
+    <!-- X-Axis -->
+    <line
+      stroke="currentColor"
+      x1={marginLeft - 6}
+      x2={width}
+      y1={height - marginBottom}
+      y2={height - marginBottom}
+    />
+
+    {#each createScales(selectedDataset.data).xScale.ticks() as tick}
+      <!-- X-Axis Ticks -->
+      <line
+        stroke="currentColor"
+        x1={createScales(selectedDataset.data).xScale(tick)}
+        x2={createScales(selectedDataset.data).xScale(tick)}
+        y1={height - marginBottom}
+        y2={height - marginBottom + 6}
+      />
+
+      <!-- X-Axis Tick Labels -->
+      <text
+        fill="currentColor"
+        text-anchor="middle"
+        x={createScales(selectedDataset.data).xScale(tick)}
+        y={height - marginBottom + 22}
+      >
+        {tick}
+      </text>
+    {/each}
+  </g>
+
+  <g>
+    <!-- Y-Axis and Grid Lines -->
+    {#each createScales(selectedDataset.data).yScale.ticks() as tick}
+      {#if tick !== 0}
+        <!-- Grid Lines -->
+        <line
+          stroke="currentColor"
+          stroke-opacity="0.1"
+          x1={marginLeft}
+          x2={width - marginRight}
+          y1={createScales(selectedDataset.data).yScale(tick)}
+          y2={createScales(selectedDataset.data).yScale(tick)}
+        />
+
+        <!-- Y-Axis Ticks -->
+        <line
+          stroke="currentColor"
+          x1={marginLeft - 6}
+          x2={marginLeft}
+          y1={createScales(selectedDataset.data).yScale(tick)}
+          y2={createScales(selectedDataset.data).yScale(tick)}
+        />
+      {/if}
+
+      <!-- Y-Axis Tick Labels -->
+      <text
+        fill="currentColor"
+        text-anchor="end"
+        dominant-baseline="middle"
+        x={marginLeft - 9}
+        y={createScales(selectedDataset.data).yScale(tick)}
+      >
+        {tick}
+      </text>
+    {/each}
+
+    <!-- Y-Axis Label -->
+    <text fill="currentColor" text-anchor="start" x={-marginLeft} y={15}>
+      ↑ Count
+    </text>
+  </g>
+
+  <!-- Define the path element -->
+  <path class="line" fill="none" stroke="steelblue" stroke-width="1.5" />
+
+  <!-- Highlight the point corresponding to the city name -->
+  <circle
+    cx={createScales(selectedDataset.data).xScale(
+      selectedDataset.data.find((d) => d.city === selectedDataset.name).year
+    )}
+    cy={createScales(selectedDataset.data).yScale(
+      selectedDataset.data.find((d) => d.city === selectedDataset.name).count
+    )}
+    r="5"
+    fill="red"
+  />
+
+  {#each selectedDataset.data as point}
+    <g>
+      <text
+        x={createScales(selectedDataset.data).xScale(point.year)}
+        y={createScales(selectedDataset.data).yScale(point.count) - 10}
+        fill="black"
+        text-anchor="middle"
+        dominant-baseline="baseline"
+      >
+        {point.count}
+      </text>
+    </g>
+  {/each}
+</svg>
