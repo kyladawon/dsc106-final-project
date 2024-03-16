@@ -99,6 +99,7 @@
     <option value={dataset}>{dataset.name}</option>
   {/each}
 </select>
+<br />
 
 <svg
   {width}
@@ -174,32 +175,23 @@
 
   <path class="line" fill="none" stroke="steelblue" stroke-width="1.5" />
 
-  <!-- {#if selectedDataset.name !== 'usa'}
-    <circle
-      cx={createScales(selectedDataset.data).xScale(
-        selectedDataset.data.find((d) => d.city === selectedDataset.name).year
-      )}
-      cy={createScales(selectedDataset.data).yScale(
-        selectedDataset.data.find((d) => d.city === selectedDataset.name).count
-      )}
-      r="5"
-      fill="red"
-    />
-  {/if} -->
-
-  <!-- <circle class="usa-circle" r="5" fill="red" /> -->
-  <!-- {#if selectedDataset.name === 'usa'}
-    {#each selectedDataset.data as point}
-      {#if point.city === 'Atlanta' || point.city === 'Los Angeles'}
-        <circle
-          cx={createScales(selectedDataset.data).xScale(point.year)}
-          cy={createScales(selectedDataset.data).yScale(point.count)}
-          r="5"
-          fill="red"
-        />
-      {/if}
-    {/each}
-  {/if} -->
+  {#each selectedDataset.data as point}
+    {#if selectedDataset.name === 'United States' && (point.city === 'Los Angeles' || point.city === 'Atlanta')}
+      <circle
+        cx={createScales(selectedDataset.data).xScale(point.year)}
+        cy={createScales(selectedDataset.data).yScale(point.count)}
+        r="5"
+        fill="red"
+      />
+    {:else if point.city === selectedDataset.name}
+      <circle
+        cx={createScales(selectedDataset.data).xScale(point.year)}
+        cy={createScales(selectedDataset.data).yScale(point.count)}
+        r="5"
+        fill="red"
+      />
+    {/if}
+  {/each}
 
   {#each selectedDataset.data as point}
     <g>
