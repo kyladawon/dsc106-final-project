@@ -6,12 +6,33 @@
   import Athlete from './Athlete.svelte';
   import { tweened } from 'svelte/motion';
   import { cubicOut } from 'svelte/easing';
+  import { fade } from 'svelte/transition';
   import Bubble from './SportsBubble.svelte';
   import Country from './country.svelte';
   import HomeAdv from './HomeAdv.svelte';
+  import Rising from './Rising.svelte';
+  import archery from './risingData/archery.js';
+  import badminton from './risingData/badminton.js';
+  import boxing from './risingData/boxing.js';
+  import canoecayak from './risingData/canoecayak.js';
+  import cycling from './risingData/cycling.js';
+  import fencing from './risingData/fencing.js';
+  import handball from './risingData/handball.js';
+  import hockey from './risingData/hockey.js';
+  import judo from './risingData/judo.js';
+  import pentathlon from './risingData/pentathlon.js';
+  import shooting from './risingData/shooting.js';
+  import softball from './risingData/softball.js';
+  import tabletennis from './risingData/tabletennis.js';
+  import taekwondo from './risingData/taekwondo.js';
+  import tennis from './risingData/tennis.js';
+  import triathlon from './risingData/triathlon.js';
+  import weightlifting from './risingData/weightlifting.js';
+  import wrestling from './risingData/wrestling.js';
 
   let count, index, offset, progress;
   let width, height;
+  let show = false;
 
   let geoJsonToFit = {
     type: 'FeatureCollection',
@@ -34,16 +55,6 @@
   };
 
   $: projection = geoMercator().fitSize([width, height], geoJsonToFit);
-
-  let isHovered = false;
-
-  function handleMouseOver() {
-    isHovered = true;
-  }
-
-  function handleMouseOut() {
-    isHovered = false;
-  }
 </script>
 
 <Scroller
@@ -61,19 +72,6 @@
     bind:clientWidth={width}
     bind:clientHeight={height}
   >
-    <!-- <Graph {index} {width} {height} {projection} /> -->
-    <!-- <div class="progress-bars">
-      <p>current section: <strong>{index + 1}/{count}</strong></p>
-      <progress value={count ? (index + 1) / count : 0} />
- 
- 
-      <p>offset in current section</p>
-      <progress value={offset || 0} />
- 
- 
-      <p>total progress</p>
-      <progress value={progress || 0} />
-    </div> -->
     <section class="b1"></section>
   </div>
 
@@ -109,14 +107,49 @@
       <Map bind:geoJsonToFit {index} />
     </section>
 
+    <section class="section5">
+      Home field advantage?
+      <HomeAdv />
+    </section>
+
     <section class="section4">
       U.S. Best Performing Sports
       <Bubble />
     </section>
 
-    <section class="section5">
-      U.S. Best Performing Sports -- line graph
-      <HomeAdv />
+    <section class="section8">
+      <h2>U.S. Rising Sports</h2>
+      <label for="show" style="display: inline;">Show Line:</label>
+      <input id="show" type="checkbox" bind:checked={show} />
+
+      <div class="row">
+        <Rising data={archery} {show} title="Archery" />
+        <Rising data={badminton} {show} title="Badminton" />
+        <Rising data={boxing} {show} title="Boxing" />
+        <Rising data={canoecayak} {show} title="Canoecayak" />
+      </div>
+      <div class="row">
+        <Rising data={cycling} {show} title="Cycling" />
+        <Rising data={fencing} {show} title="Fencing" />
+        <Rising data={handball} {show} title="Handball" />
+        <Rising data={hockey} {show} title="Hockey" />
+      </div>
+      <div class="row">
+        <Rising data={judo} {show} title="Judo" />
+        <Rising data={pentathlon} {show} title="Pentathlon" />
+        <Rising data={shooting} {show} title="Shooting" />
+        <Rising data={softball} {show} title="Softball" />
+      </div>
+      <div class="row">
+        <Rising data={tabletennis} {show} title="TableTennis" />
+        <Rising data={taekwondo} {show} title="Taekwondo" />
+        <Rising data={tennis} {show} title="Tennis" />
+        <Rising data={triathlon} {show} title="Triathlon" />
+      </div>
+      <div class="row">
+        <Rising data={weightlifting} {show} title="Weightlifting" />
+        <Rising data={wrestling} {show} title="Wrestling" />
+      </div>
     </section>
 
     <section class="section6">
@@ -320,6 +353,22 @@
       rgba(0, 0, 128, 0.5),
       rgba(0, 0, 0, 0.5)
     );
+  }
+
+  .section8 {
+    width: 100%;
+    overflow: auto; /* Add overflow to enable scrolling if content overflows */
+    padding: 10px; /* Add padding to the section */
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap onto multiple lines */
+    margin-bottom: 30px; /* Reduce margin between rows */
+    margin-left: 5cap;
+    margin-top: 30px;
+    /* justify-content: center;  */
+    transition: justify-content 0.5s;
   }
 
   .takeaway {
