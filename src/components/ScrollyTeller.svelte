@@ -4,13 +4,15 @@
   import { geoMercator } from 'd3-geo';
   import Project3 from './Proj3.svelte';
   import Athlete from './Athlete.svelte';
+  import Top5 from './Top5.svelte';
   import { tweened } from 'svelte/motion';
   import { cubicOut } from 'svelte/easing';
   import { fade } from 'svelte/transition';
   import Bubble from './SportsBubble.svelte';
-  import Country from './country.svelte';
+  import Country from './Country.svelte';
   import HomeAdv from './HomeAdv.svelte';
   import Rising from './Rising.svelte';
+
   import archery from './risingData/archery.js';
   import badminton from './risingData/badminton.js';
   import boxing from './risingData/boxing.js';
@@ -29,10 +31,12 @@
   import triathlon from './risingData/triathlon.js';
   import weightlifting from './risingData/weightlifting.js';
   import wrestling from './risingData/wrestling.js';
+  import RisingAthlete from './RisingAthlete.svelte';
 
   let count, index, offset, progress;
   let width, height;
   let show = false;
+  // let isMouseInside = false;
 
   let geoJsonToFit = {
     type: 'FeatureCollection',
@@ -152,19 +156,25 @@
       </div>
     </section>
 
+    <section>
+      Top 5 Sports <br />
+      <Top5 />
+    </section>
+
     <section class="section6">
       <Athlete />
     </section>
 
     <section class="section7">
+      Leading Country <br />
       <Country />
     </section>
-    <!-- <section class = "section7">
-      
-      <Video />
-    </section> -->
-    <!-- <section>U.S. Gender Based Performance</section> -->
-    <!-- <section class = "section8">Is there a home field advantage?</section> -->
+
+    <section class="section10">
+      Rising Athlete for Top 5 Rising Sport
+      <RisingAthlete />
+    </section>
+
     <section class="section9">
       Closing Thoughts
 
@@ -354,11 +364,23 @@
       rgba(0, 0, 0, 0.5)
     );
   }
+  .section10 {
+    background-image: linear-gradient(
+      to bottom right,
+      rgba(205, 12, 12, 0.5),
+      rgba(28, 218, 91, 0.5)
+    );
+  }
 
   .section8 {
     width: 100%;
     overflow: auto; /* Add overflow to enable scrolling if content overflows */
     padding: 10px; /* Add padding to the section */
+    background-image: linear-gradient(
+      to bottom right,
+      rgba(205, 12, 12, 0.5),
+      rgba(28, 218, 91, 0.5)
+    );
   }
 
   .row {

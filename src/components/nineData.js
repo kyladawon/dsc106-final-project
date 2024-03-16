@@ -50,10 +50,10 @@ export const montreal=   [
 
 export const moscow =   [
 
-    {year: 1976, city: 'Montreal', count: 0},
-    {year: 1980, city: 'Moscow', count: 0},
+    {year: 1976, city: 'Montreal', count: 285},
+    {year: 1980, city: 'Moscow', count: 442},
     {year: 1984, city: 'Los Angeles', count: 0},
-    {year: 1988, city: 'Seoul', count: 0},
+    {year: 1988, city: 'Seoul', count: 294},
     {year: 1992, city: 'Barcelona', count: 0},
     {year: 1996, city: 'Atlanta', count: 115},
     {year: 2000, city: 'Sydney', count: 188},

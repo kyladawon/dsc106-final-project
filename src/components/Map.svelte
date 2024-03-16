@@ -225,7 +225,6 @@
 </svelte:head>
 
 <div class="map" class:visible={isVisible} bind:this={container} />
-message.txt
 
 <style>
   .map {
