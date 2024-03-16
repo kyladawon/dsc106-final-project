@@ -108,7 +108,7 @@
     </section>
 
     <section class="section5">
-      Home field advantage?
+      Home field advantage?<br />
       <HomeAdv />
     </section>
 

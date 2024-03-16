@@ -10,7 +10,6 @@
   export let data;
   export let title;
   export let show;
-  export let visible;
 
   // Initialize variables
   let xScale, yScale, pathLine;
