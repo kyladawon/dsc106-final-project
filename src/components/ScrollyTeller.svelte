@@ -9,9 +9,31 @@
   import Bubble from './SportsBubble.svelte';
   import Country from './country.svelte';
   import HomeAdv from './HomeAdv.svelte';
+  import Rising from './Rising.svelte';
+  import archery from './risingData/archery.js';
+  import badminton from './risingData/badminton.js';
+  import boxing from './risingData/boxing.js';
+  import canoecayak from './risingData/canoecayak.js';
+  import cycling from './risingData/cycling.js';
+  import fencing from './risingData/fencing.js';
+  import handball from './risingData/handball.js';
+  import hockey from './risingData/hockey.js';
+  import judo from './risingData/judo.js';
+  import pentathlon from './risingData/pentathlon.js';
+  import shooting from './risingData/shooting.js';
+  import softball from './risingData/softball.js';
+  import tabletennis from './risingData/tabletennis.js';
+  import taekwondo from './risingData/taekwondo.js';
+  import tennis from './risingData/tennis.js';
+  import triathlon from './risingData/triathlon.js';
+  import weightlifting from './risingData/weightlifting.js';
+  import wrestling from './risingData/wrestling.js';
+  import Top5 from './Top5.svelte';
+
 
   let count, index, offset, progress;
   let width, height;
+  let show = false;
 
   let geoJsonToFit = {
     type: 'FeatureCollection',
@@ -78,64 +100,139 @@
   </div>
 
   <div class="foreground" slot="foreground">
-    <section class="section1">
-      <div class="banner">
+
+    
+
+    <section class="intro-page">
+      <!-- <div class="banner"> -->
         <h1 class="title">United States in the Olympics</h1>
         <p>Kyla Park and Essie Cheng</p>
+      <!-- </div> -->
+      <div class="box">
+        <div class="inner">
+          <span>Exploration Through Visualization</span>
+        </div>
+        <div class="inner">
+          <span>Exploration Through Visualization</span>
+        </div>
       </div>
       <h2 class="hook">
         <i>Nothing Lasts Forever </i>
       </h2>
-      <p class="hook2">
-        Explore Olympic excellence and dive into the intricate dynamics of the
-        United States' Olympic dominance, where a combination of home advantage
-        and exceptional performances in certain sports and athletes have fueled
-        a legacy of success. But..
-      </p>
-      <p class="hook3">
-        Shifting landscapes and emerging talents are bound to reshape the
-        narrative of the U.S. in the Olympics. As the trajectory evolves, we
-        must discover potential areas for future investment and growth.
-      </p>
       <div class="olympic-logo"></div>
     </section>
 
-    <section class="section2">
-      Data Exploration
+    <section class="proj3">
+      <h3> Data Exploration</h3>
+      <p class = 'instructions'> A comprehensive overview of the Olympics: click bar to drill down into further detail, click background to go back up. Select/deselect medal buttons to filter type of medal. </p>
       <Project3 />
-    </section>
-    <section class="section3">
-      Where have the Olympics Been Held?
-      <Map bind:geoJsonToFit {index} />
+      <p class = 'explanation'> No matter the sport or year, the U.S frequently appears. They seem to consistently be a dominant force, and maybe even be the best in the world. A look at the overall medal tally can confirm if this is true. ↓ </p>
     </section>
 
-    <section class="section4">
-      U.S. Best Performing Sports
-      <Bubble />
-    </section>
-
-    <section class="section5">
-      U.S. Best Performing Sports -- line graph
+    <section class="home-advantage-1">
+      <h3> Home Advantage </h3>
+      <p class = 'instructions'> Medal count history for each country that has hosted the Olympics: use dropdown menu to select location. Red dot indicates that the country hosted the Olympics that year</p>
       <HomeAdv />
     </section>
 
-    <section class="section6">
+    <section class="home-advantage-2">
+      <h3> Home Advantage</h3>
+      <p class = 'instructions'> A broader look at the connection between home advantage and overall Olympic success: 
+      light blue countries have hosted the Olympics and are in the top ten for number of medals won overall. 
+      Purple countries have hosted the Olympics but are not in the top ten for number of medals won overall.
+      Orange countries have not hosted the Olympics but are in the top ten for number of medals won overall.
+      Hover the markers for host city and year.
+    </p>
+      <Map bind:geoJsonToFit {index}/>
+      <p class = 'explanation'> Might notice</p>
+    </section>
+
+    <section class="top-sports">
+      <h3> Team USA Best Performing Sports</h3>
+      <p class = 'instructions'> Top 5 sports for Team USA each year: scroll through slider to change between years or click button for automated transitions. </p>
+      <Bubble />
+      <p class = 'explanation'> Might notice</p>
+    </section>
+
+    <section class="top-athletes">
+      <h3> Top Olympic Athletes</h3>
+      <p class = 'instructions'> Top 3 Olympic athletes of all time: click the button to
+      reveal each athlete. Then scroll the timeline on the right for more details about their feats. </p>
       <Athlete />
     </section>
 
-    <section class="section7">
-      <Country />
+    <section class="transition-section">
+      <p > It looks like </p>
     </section>
+
+    
+
+    <section class="top-countries">
+      <h3> Top Countries</h3>
+      <p class = 'instructions'> This is snfjsn </p>
+      <Country />
+      <p class = 'explanation'> Might notice</p>
+    </section>
+
+    <section class="rising-sports">
+      <h3>U.S. Rising Sports</h3>
+      <label for="show" style="display: inline;">Show Line:</label>
+      <input id="show" type="checkbox" bind:checked={show} />
+
+      <div class="row">
+        <Rising data={archery} {show} title="Archery" />
+        <Rising data={badminton} {show} title="Badminton" />
+        <Rising data={boxing} {show} title="Boxing" />
+        <Rising data={canoecayak} {show} title="Canoecayak" />
+      </div>
+      <div class="row">
+        <Rising data={cycling} {show} title="Cycling" />
+        <Rising data={fencing} {show} title="Fencing" />
+        <Rising data={handball} {show} title="Handball" />
+        <Rising data={hockey} {show} title="Hockey" />
+      </div>
+      <div class="row">
+        <Rising data={judo} {show} title="Judo" />
+        <Rising data={pentathlon} {show} title="Pentathlon" />
+        <Rising data={shooting} {show} title="Shooting" />
+        <Rising data={softball} {show} title="Softball" />
+      </div>
+      <div class="row">
+        <Rising data={tabletennis} {show} title="TableTennis" />
+        <Rising data={taekwondo} {show} title="Taekwondo" />
+        <Rising data={tennis} {show} title="Tennis" />
+        <Rising data={triathlon} {show} title="Triathlon" />
+      </div>
+      <div class="row">
+        <Rising data={weightlifting} {show} title="Weightlifting" />
+        <Rising data={wrestling} {show} title="Wrestling" />
+      </div>
+    </section>
+
+    <section class = top-sports-rising>
+      Top 5 Sports <br />
+      <Top5 />
+    </section>
+
+   
+
+    
+
+    <!-- <section class="section10">
+      Rising Athlete for Top 5 Rising Sport
+      <RisingAthlete />
+    </section> -->
+
     <!-- <section class = "section7">
       
       <Video />
     </section> -->
     <!-- <section>U.S. Gender Based Performance</section> -->
     <!-- <section class = "section8">Is there a home field advantage?</section> -->
-    <section class="section9">
-      Closing Thoughts
+    <section class="conclusion">
+      
 
-      <section id="custom-background-section">
+      
         <h3 class="takeaway">
           The U.S. has been dominant in the Olympics thanks to excelling in
           <b>aquatics</b> and <b>athletics</b>, with the top Olympic athletes of
@@ -151,11 +248,61 @@
           the U.S.'s dominance in the Olympics.
         </h3>
       </section>
-    </section>
+    
   </div>
 </Scroller>
 
 <style>
+
+.box {
+	display: flex;
+}
+
+.box .inner {
+	width: 800px;
+	height: 200px;
+	line-height: 200px;
+	font-size: 4em;
+	font-family: sans-serif;
+	font-weight: bold;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.box .inner:first-child {
+	background-color: lightskyblue;
+	color: rgb(53, 127, 206);
+	transform-origin: right;
+	transform: perspective(100px) rotateY(-15deg);
+}
+
+.box .inner:last-child {
+	background-color: lightskyblue;
+	color: rgb(53, 127, 206);
+	transform-origin: left;
+	transform: perspective(100px) rotateY(15deg);
+}
+
+.box .inner span {
+	position: absolute;
+	animation: marquee 5s linear infinite;
+}
+
+.box .inner:first-child span {
+	animation-delay: 2.5s;
+	left: -100%;
+}
+
+@keyframes marquee {
+	from {
+		left: 100%;
+	}
+
+	to {
+		left: -100%;
+	}
+}
+
   .olympic-logo {
     width: 120px; /* Adjust size as needed */
     height: 1200px; /* Adjust size as needed */
@@ -163,7 +310,7 @@
     background-size: contain;
     background-repeat: no-repeat;
     position: relative;
-    bottom: 75px;
+    bottom: -55px;
     left: -100px; /* Initial position outside the screen */
     animation: moveLogo 10s linear infinite; /* Adjust duration as needed */
   }
@@ -185,14 +332,31 @@
     /* outline: green solid 3px; */
     font-family: 'Times New Roman';
   }
-  .banner {
-    background-color: rgba(0, 0, 0, 0.7); /* Background color */
-    padding: 20px; /* Padding */
-    margin-bottom: 20px; /* Bottom margin to separate from other content */
-    text-align: center; /* Center align text */
+  /* .banner {
+    background-color: rgba(0, 0, 0, 0.7); 
+    padding: 20px; 
+    margin-bottom: 20px; 
+    text-align: center; 
   }
   .banner p {
     color: white;
+  } */
+
+  h3 {
+    margin-top: 10px;
+  }
+  .instructions {
+    font-size: 16px;
+    margin-top: -20px;
+    font-style: italic;
+    font-family: arial;
+    margin-left: 3px;
+    margin-right: 3px;
+  }
+  .explanation {
+    font-size: 18px;
+    font-family: 'times new roman';
+    margin-top: 30px;
   }
   .title {
     font-family: 'Times New Roman';
@@ -215,36 +379,11 @@
     position: relative;
     top: 100px;
     background-color: rgba(0, 0, 0, 0.7); /* Background color */
-    padding: 10px 20px; /* Padding */
+    padding: 10px 20px; 
     display: inline-block; /* Display as inline-block */
     border: 2px solid #30dce5;
   }
 
-  .hook2 {
-    font-family: 'Times New Roman';
-    line-height: 1.5;
-    position: relative;
-    top: -200px;
-    color: white;
-    background-color: rgba(0, 0, 0, 0.7); /* Background color */
-    padding: 20px; /* Padding */
-    border: 2px solid #30dce5; /* Border */
-    box-shadow: 0 0 10px #30dce5; /* Box shadow */
-    display: inline-block; /* Display as inline-block */
-  }
-
-  .hook3 {
-    font-family: 'Times New Roman';
-    line-height: 1.5;
-    position: relative;
-    top: -70px;
-    color: white;
-    background-color: rgba(0, 0, 0, 0.7); /* Background color */
-    padding: 20px; /* Padding */
-    border: 2px solid #30dce5; /* Border */
-    box-shadow: 0 0 10px #30dce5; /* Box shadow */
-    display: inline-block; /* Display as inline-block */
-  }
 
   .foreground {
     width: 100%;
@@ -253,6 +392,8 @@
     position: relative;
     /* outline: blue 3px; */
   }
+
+
   section {
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.1);
@@ -268,16 +409,18 @@
     font-size: 35px;
     line-height: 28px;
     font-weight: bold;
-    padding-top: 10px;
+    padding-top: 20px;
+
+
   }
-  .section1 {
+  .intro-page {
     /* background-color: white; */
     font-size: 20px;
     background-image: url('b.jpeg');
     background-size: cover; /* Adjust to cover the entire section */
     background-position: center; /* Adjust to position the image */
   }
-  .section2 {
+  .proj3 {
     background-image: linear-gradient(
       to bottom right,
       rgba(0, 255, 0, 0.5),
@@ -285,7 +428,7 @@
     );
   }
 
-  .section3 {
+  .home-advantage-2 {
     background-image: linear-gradient(
       to bottom right,
       rgba(255, 255, 0, 0.5),
@@ -293,34 +436,63 @@
     );
   }
 
-  .section4 {
+  .top-sports {
     background-image: linear-gradient(
       to bottom right,
       rgba(0, 0, 255, 0.5),
       rgba(0, 255, 255, 0.5)
     );
   }
-  .section5 {
+  .home-advantage-1 {
     background-image: linear-gradient(
       to bottom right,
       rgba(128, 0, 128, 0.5),
       rgba(255, 192, 203, 0.5)
     );
   }
-  .section6 {
+  .top-athletes {
     background-image: linear-gradient(
       to bottom right,
       rgba(0, 0, 128, 0.5),
       rgba(0, 0, 0, 0.5)
     );
   }
-  .section7 {
+  .transition-section {
+    background-image: linear-gradient(
+      to bottom right,
+      rgba(127, 3, 104, 0.5),
+      rgba(15, 201, 230, 0.5)
+    );
+  }
+  .rising-sports {
+    width: 100%;
+    overflow: auto; 
+    padding: 10px; 
+    background-image: linear-gradient(
+      to bottom right,
+      rgba(205, 12, 12, 0.5),
+      rgba(28, 218, 91, 0.5)
+    );
+  }
+
+  .top-countries {
     background-image: linear-gradient(
       to bottom right,
       rgba(0, 0, 128, 0.5),
       rgba(0, 0, 0, 0.5)
     );
   }
+
+  .row {
+        font-size: 15px;
+        display: flex;
+        flex-wrap: wrap; /* Allow items to wrap onto multiple lines */
+        justify-content: center; /* Center items horizontally */
+        margin-bottom: 10px; /* Reduce margin between rows */
+        margin-top: 30px;
+    }
+
+
 
   .takeaway {
     color: white;
@@ -329,47 +501,14 @@
     padding: 5px 10px;
   }
 
-  #custom-background-section {
-    position: relative; /* Needed for the absolute positioning of the pseudo-element */
-    height: 100%; /* Adjust based on your needs */
-    overflow: hidden; /* Ensures the pseudo-element doesn't extend outside this container */
+  .conclusion {
+    background-image: url('b.jpeg');
+    background-size: cover; /* Adjust to cover the entire section */
+    background-position: center; /* Adjust to position the image */
+
   }
 
-  #custom-background-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-size: cover; /* Cover the entire section */
-    background-position: center; /* Center the background image */
-    opacity: 0.5; /* Adjust opacity as needed */
-    z-index: -1; /* Ensures the background is behind the content */
-    animation: switchBackground 15s infinite; /* Apply the animation */
-  }
+  </style>
 
-  /* #custom-background-section > * {
-      position: relative;
-      z-index: 1;
-  } */
 
-  @keyframes switchBackground {
-    0%,
-    20% {
-      background-image: url('olympics4.jpeg');
-    }
-    45%,
-    55% {
-      background-image: url('olympics5.jpeg');
-    }
-    55%,
-    70% {
-      background-image: url('olympics6.jpeg');
-    }
-    100%,
-    0% {
-      background-image: url('olympics7.jpeg');
-    }
-  }
-</style>
+  

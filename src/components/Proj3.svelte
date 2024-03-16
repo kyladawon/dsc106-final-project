@@ -611,7 +611,7 @@
   <script
     src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"
   ></script>
-  <div id="chart-container" style="width: 100%; height: 80vh;">
+  <div id="chart-container" style="width: 90%; height: 70vh;">
     <div class="tooltip" style="opacity: 0;"></div>
     <div>
       <label class="gold-label">
@@ -648,7 +648,7 @@
     background-position: 95% 90%;
     background-color: white;
     width: 100%;
-    max-width: 1200px;
+    max-width: 1080px;
     height: 100%;
     position: relative;
     border: 0px solid;

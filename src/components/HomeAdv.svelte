@@ -25,12 +25,12 @@
   ];
 
   // Chart dimensions and margins
-  const width = 928;
-  const height = 500;
-  const marginTop = 20;
+  const width = 628;
+  const height = 400;
+  const marginTop = 10;
   const marginRight = 30;
-  const marginBottom = 30;
-  const marginLeft = 40;
+  const marginBottom = 50;
+  const marginLeft = 80;
 
   // Selected dataset
   let selectedDataset = datasets[0];
@@ -72,16 +72,36 @@
       .attr('d', lineGenerator(selectedDataset.data));
   }
 
+  if (selectedDataset.name == 'usa') {
+    updateUSACircleAndText();
+  }
+
+  function updateUSACircleAndText() {
+    const usaTotalCount = usa.reduce((total, city) => total + city.count, 0);
+
+    // Update red circle
+    const redCircle = d3.select('.usa-circle');
+    redCircle.attr('cx', createScales(usa).xScale(usa[0].year)); // Assuming there's only one year data for "USA"
+    redCircle.attr('cy', createScales(usa).yScale(usaTotalCount)); // Using the total count for "USA"
+
+    // Update associated text
+    const text = d3.select('.usa-count');
+    text.text(usaTotalCount); // Displaying the total count for "USA"
+    text.attr('x', createScales(usa).xScale(usa[0].year)); // Assuming there's only one year data for "USA"
+    text.attr('y', createScales(usa).yScale(usaTotalCount) - 10); // Adjusting the position of the text
+  }
   // Call updateLine function on component mount
   onMount(updateLine);
 </script>
 
-<!-- Add the updateLine function call inside the select element -->
-<select bind:value={selectedDataset} on:change={updateLine}>
-  {#each datasets as dataset}
-    <option value={dataset}>{dataset.name}</option>
-  {/each}
-</select>
+<div style="margin-top: 80px;"> <!-- Add margin-top to move the button down -->
+  <select class = 'selection-button' bind:value={selectedDataset} on:change={updateLine}>
+    {#each datasets as dataset}
+      <option value={dataset}>{dataset.name}</option>
+    {/each}
+  </select>
+</div>
+<br />
 
 <svg
   {width}
@@ -90,7 +110,6 @@
   style="max-width: 100%; height: auto;"
 >
   <g>
-    <!-- X-Axis -->
     <line
       stroke="currentColor"
       x1={marginLeft - 6}
@@ -100,7 +119,6 @@
     />
 
     {#each selectedDataset.data as point}
-      <!-- X-Axis Ticks -->
       <line
         stroke="currentColor"
         x1={createScales(selectedDataset.data).xScale(point.year)}
@@ -109,7 +127,6 @@
         y2={height - marginBottom + 6}
       />
 
-      <!-- X-Axis Tick Labels -->
       <text
         fill="currentColor"
         text-anchor="middle"
@@ -122,10 +139,8 @@
   </g>
 
   <g>
-    <!-- Y-Axis and Grid Lines -->
     {#each createScales(selectedDataset.data).yScale.ticks() as tick}
       {#if tick !== 0}
-        <!-- Grid Lines -->
         <line
           stroke="currentColor"
           stroke-opacity="0.1"
@@ -135,7 +150,6 @@
           y2={createScales(selectedDataset.data).yScale(tick)}
         />
 
-        <!-- Y-Axis Ticks -->
         <line
           stroke="currentColor"
           x1={marginLeft - 6}
@@ -145,7 +159,6 @@
         />
       {/if}
 
-      <!-- Y-Axis Tick Labels -->
       <text
         fill="currentColor"
         text-anchor="end"
@@ -157,29 +170,50 @@
       </text>
     {/each}
 
-    <!-- Y-Axis Label -->
-    <text fill="currentColor" text-anchor="start" x={-marginLeft} y={15}>
-      ↑ Count
+    <text
+    fill="purple"
+    transform="rotate(-90)"
+    text-anchor="middle"
+    x={-marginLeft - 130} 
+    y={height / 10}
+  >
+    Total Medal Count
+  </text>
+
+    <text fill="purple" text-anchor="middle" x={width / 2 + 25} y={height - 5}>
+      Year
     </text>
+
   </g>
 
-  <!-- Define the path element -->
   <path class="line" fill="none" stroke="steelblue" stroke-width="1.5" />
 
-  <!-- Highlight the point corresponding to the city name -->
-  <circle
-    cx={createScales(selectedDataset.data).xScale(
-      selectedDataset.data.find((d) => d.city === selectedDataset.name).year
-    )}
-    cy={createScales(selectedDataset.data).yScale(
-      selectedDataset.data.find((d) => d.city === selectedDataset.name).count
-    )}
-    r="5"
-    fill="red"
-  />
+  {#each selectedDataset.data as point}
+    {#if selectedDataset.name === 'United States' && (point.city === 'Los Angeles' || point.city === 'Atlanta')}
+      <circle
+        cx={createScales(selectedDataset.data).xScale(point.year)}
+        cy={createScales(selectedDataset.data).yScale(point.count)}
+        r="5"
+        fill="red"
+      />
+    {:else if point.city === selectedDataset.name}
+      <circle
+        cx={createScales(selectedDataset.data).xScale(point.year)}
+        cy={createScales(selectedDataset.data).yScale(point.count)}
+        r="5"
+        fill="red"
+      />
+    {/if}
+  {/each}
 
   {#each selectedDataset.data as point}
     <g>
+      <text
+        class="usa-count"
+        fill="black"
+        text-anchor="middle"
+        dominant-baseline="baseline"
+      ></text>
       <text
         x={createScales(selectedDataset.data).xScale(point.year)}
         y={createScales(selectedDataset.data).yScale(point.count) - 10}
@@ -192,3 +226,23 @@
     </g>
   {/each}
 </svg>
+
+<style>
+  svg {
+    margin-top: 0px;
+  }
+  text {
+    font-size: 20px;
+  }
+
+  .selection-button {
+  
+  border: 1px solid #ccc; /* Add border */
+  border-radius: 5px; /* Add border radius */
+  background-color: #f0f0f0; /* Add background color */
+  color: #333; /* Add text color */
+  cursor: pointer; /* Change cursor on hover */
+}
+
+</style>
+
